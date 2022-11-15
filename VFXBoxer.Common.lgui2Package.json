@@ -1,0 +1,51 @@
+{
+    "$schema": "http://www.lavishsoft.com/schema/lgui2Package.json",
+    "skin":{
+        "name":"VFXBoxer",
+        "templates": {
+            "vfxboxer.DefaultSettings":{
+                "captureHotkey":"Alt+X",
+                "nextViewHotkey":"Ctrl+Tab",
+                "previousViewHotkey":"Ctrl+Shift+Tab",
+                "cloneHotkey":"Ctrl+Shift+C",
+                "allCloneHotkey":"Alt+Ctrl+Shift+C",
+                "viewHotkeys":["Ctrl+1","Ctrl+2","Ctrl+3","Ctrl+4","Ctrl+5","Ctrl+6","Ctrl+7","Ctrl+8","Ctrl+9","Ctrl+0"],
+                "windowSize":[1920,1040],
+                "backgroundColor":"#333333",
+                "lineupEdge":"bottom",
+                "lineupSize":200       
+            }    
+        },
+        "brushes": {
+            "window.titleBar.backgroundBrush": {
+                "color": "#ff196666",
+                "canvas": {
+                    "width": 128,
+                    "height": 128,
+                    "initialize": [
+                        {
+                            "op": "clear"
+                        },
+                        {
+                            "op": "pushBrush",
+                            "brush": "white"
+                        },
+                        {
+                            "op": "drawPrimitives",
+                            "type": "triangleList",
+                            "vertices": [
+                                [ 0.0, 1.0, 0.0, 1.0, "#ff196666" ],
+                                [ 0.0, 0.0, 0.0, 0.0, "#ff196666" ],
+                                [ 1.0, 0.0, 1.0, 0.0, "#ff196666" ],
+                    
+                                [ 1.0, 0.0, 1.0, 0.0, "#ff196666" ],
+                                [ 1.0, 1.0, 1.0, 1.0, "#ff0c2626" ],
+                                [ 0.0, 1.0, 0.0, 1.0, "#ff196666" ]
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

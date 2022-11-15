@@ -1,0 +1,235 @@
+{
+    "$schema": "http://www.lavishsoft.com/schema/lgui2Package.json",    
+    "includes":["VFXBoxer.Common.lgui2Package.json"],
+    "skin":"VFXBoxer",
+    "templates": {
+        "vfxboxer.ViewBar":{
+            "type": "dockpanel",
+            "children": [
+                {
+                    "jsonTemplate":"window.closeButton",
+                    "_dock":"right",
+                    "verticalAlignment":"center",
+                    "margin":[10,0,0,0],
+                    "eventHandlers":{
+                        "onMouseButtonMove":{
+                            "type":"method",
+                            "object":"VFXBoxer",
+                            "method":"OnCloseButton"
+                        }
+                    }
+                },
+                {
+                    "_dock":"right",
+                    "margin":[5,0,0,0],
+                    "verticalAlignment":"center",
+                    "type":"checkbox",
+                    "content":"Clone",
+                    "checkedBinding":{
+                        "pullFormat":"${This.Context.GetBool[clone]}",
+                        "pushFormat":["VFXBoxer:SetClone[\"${This.Context.Get[name]~}\",\"","\"]"]
+                    }
+                },
+                {
+                    "type":"button",
+                    "_dock":"left",
+                    "content":{
+                        "type": "textblock",
+                        "textBinding": {
+                            "pullFormat": "${This.Context.Get[windowText]}"
+                        }
+                    },
+                    "eventHandlers": {
+                        "onRelease":{
+                            "type": "method",
+                            "object": "VFXBoxer",
+                            "method": "OnActivateButton"
+                        }
+                    }
+                }          
+            ]
+        },
+        "vfxboxer.View": {
+            "type": "dockpanel",
+            "children": [
+                {
+                    "_dock": "top",
+                    "jsonTemplate":"vfxboxer.ViewBar"
+                },
+                {
+                    "type": "videofeed",
+                    "-sendKeyboard": false,
+                    "-sendMouse": false,
+                    "feedNameBinding": {
+                        "pullFormat": "${This.Context.Get[name]}"
+                    },
+                    "useLocalBindings":true,
+                    "horizontalAlignment": "center",
+                    "verticalAlignment": "center"
+                }
+            ]
+        },
+        "vfxboxer.ListView":{
+            "jsonTemplate": "listboxitem",
+            "content": {
+                "jsonTemplate": "vfxboxer.View",
+                "contextBinding":{
+                    "pullFormat":"${_CONTEXTITEMDATA_}"
+                }
+            }
+        }
+    },
+    "elements": [
+        {
+            "type": "panel",
+            "visibility": "hidden",
+            "name": "vfxboxer.events"
+        },
+        {
+            "type": "window",
+            "name": "vfxboxer.mainwindow",
+            "title":"VFXBoxer ${InnerSpace.Agent[vfxboxer].Version}",
+            "horizontalAlignment":"stretch",
+            "verticalAlignment":"stretch",
+            "borderThickness":0,
+            "content": {
+                "type": "dockpanel",
+                "horizontalAlignment":"stretch",
+                "verticalAlignment":"stretch",
+                "children": [
+                    {                        
+                        "_dock":"bottom",
+                        "type":"dockpanel",
+                        "horizontalAlignment":"stretch",
+                        "padding":5,
+                        "children":[
+                            {
+                                "_dock":"left",
+                                "type":"textblock",
+                                "text":"Capture Hotkey: ",
+                                "verticalAlignment":"center"
+                            },
+                            {
+                                "type":"button",
+                                "_dock":"right",
+                                "content":"Reload Agent",
+                                "eventHandlers": {
+                                    "onRelease":{
+                                        "type":"code",
+                                        "code":["InnerSpace.Agent[VFXBoxer]:Stop:Reload:Start",
+                                                "VFXBoxer:EnableControlWindow"]
+                                    }
+                                }        
+                            },
+                            {
+                                "_dock":"left",
+                                "type": "inputpicker",
+                                "name":"vfxboxer.CaptureHotkey",
+                                "multipleControlMode": false,
+                                "verticalAlignment":"center",
+                                "comboMode": true,
+                                "width":100,
+                                "height":20,
+                                "valueBinding": {
+                                    "pullFormat":"${VFXBoxer.GetCaptureHotkey}",
+                                    "pushFormat":["VFXBoxer:SetCaptureHotkey[\"","\"]"]
+                                }
+                            },
+                            {
+                                "_dock":"left",
+                                "type":"checkbox",
+                                "margin":[15,0,0,0],
+                                "content":"Show Resize Control",
+                                "verticalAlignment":"center",
+                                "checkedBinding":{
+                                    "pullFormat":"${VFXBoxer.ShowLineupSizeControl}",
+                                    "pushFormat":["VFXBoxer:SetShowLineupSizeControl[","]"]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "type":"dockpanel",
+                        "name":"vfxboxer.LayoutArea",
+                        "horizontalAlignment":"stretch",
+                        "verticalAlignment":"stretch",
+                        "eventHandlers":{
+                            "onActualSizeChanged":{
+                                "type":"method",
+                                "object":"VFXBoxer",
+                                "method":"OnLayoutAreaChanged"
+                            }
+                        },
+                        "children":[
+                            {
+                                "_dock":"right",
+                                "type":"slider",
+                                "name":"vfxboxer.VerticalSlider",
+                                "verticalAlignment":"stretch",
+                                "fromEdge":"bottom",
+                                "width":20,
+                                "valueBinding":{
+                                    "pullFormat":"${VFXBoxer.VerticalSliderPosition}",
+                                    "pushFormat":["VFXBoxer:OnVerticalSliderPosition[","]"]
+                                }
+                            },
+                            {
+                                "_dock": "bottom",
+                                "horizontalAlignment": "stretch",
+                                "type": "listbox",
+                                "name": "vfxlist",
+                                "content": {
+                                    "jsonTemplate": "stackpanel",
+                                    "type": "stackpanel",
+                                    "backgroundBrush": {
+                                        "color": [
+                                            0,
+                                            0,
+                                            0
+                                        ]
+                                    },
+                                    "height":200,
+                                    "orientation": "horizontal"
+                                },
+                                "-contentContainer":{
+                                    "jsonTemplate":"listbox.contentContainerFitWidth"
+                                },
+                                "itemsBinding": {
+                                    "pullFormat": "${VFXBoxer.ShowViews}"
+                                },
+                                "itemViewGenerators": {
+                                    "default": {
+                                        "type": "template",
+                                        "template": "vfxboxer.ListView"
+                                    }
+                                }
+                            },
+                            {
+                                "_dock":"bottom",
+                                "type":"slider",
+                                "name":"vfxboxer.HorizontalSlider",
+                                "fromEdge":"left",
+                                "horizontalAlignment":"stretch",
+                                "height":20,
+                                "valueBinding":{
+                                    "pullFormat":"${VFXBoxer.HorizontalSliderPosition}",
+                                    "pushFormat":["VFXBoxer:OnHorizontalSliderPosition[","]"]
+                                }
+                            },
+                            {
+                                "_dock": "top",
+                                "jsonTemplate":"vfxboxer.View",
+                                "name":"vfxboxer.ActiveView",
+                                "horizontalAlignment":"center",
+                                "verticalAlignment":"center",
+                                "contextBinding":{
+                                    "pullFormat":"${VFXBoxer.ActiveView}"
+                                }
+                            }
+                        ]
+                    }                    
+                ]
+            }
+        }
+    ]
+}

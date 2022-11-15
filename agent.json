@@ -1,0 +1,36 @@
+{
+    "$schema": "http://www.lavishsoft.com/schema/agent.json",
+    "name": "VFXBoxer",
+    "version": "20221005.1",
+    "minimumBuild": 6991,
+    "platforms": {
+        "inner space uplink": {
+            "eventHandlers": {
+                "onAgentStartup": {
+                    "code": [
+                        "run VFXBoxer.Uplink.iss"
+                    ]
+                },
+                "onAgentShutdown": {
+                    "code": [                        
+                        "endscript VFXBoxer.Uplink"
+                    ]
+                }
+            }
+        },
+        "inner space session": {
+            "eventHandlers": {
+                "onAgentStartup": {
+                    "code": [
+                        "run VFXBoxer.Session.iss"
+                    ]
+                },
+                "onAgentShutdown": {
+                    "code": [                        
+                        "endscript VFXBoxer.Session"
+                    ]
+                }
+            }
+        }
+    }
+}

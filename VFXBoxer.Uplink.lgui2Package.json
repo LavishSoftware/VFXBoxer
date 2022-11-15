@@ -1,0 +1,146 @@
+{
+    "$schema": "http://www.lavishsoft.com/schema/lgui2Package.json",    
+    "includes":["VFXBoxer.Common.lgui2Package.json"],
+    "skin":"VFXBoxer",
+    "templates": {
+              
+    },
+    "elements": [
+        {
+            "type": "panel",
+            "visibility": "hidden",
+            "name": "vfxboxer.events"
+        },
+        {
+            "type":"window",
+            "name": "vfxboxer.mainwindow",
+            "visibility": "hidden",
+            "title":"VFXBoxer ${InnerSpace.Agent[vfxboxer].Version}",
+            "hideOnClose": true,
+            "width":300,
+            "horizontalAlignment": "center",
+            "verticalAlignment": "center",
+            "content":{
+                "type":"dockpanel",
+                "padding":5,
+                "horizontalAlignment": "stretch",
+                "children":[
+                    {
+                        "_dock":"top",
+                        "type":"objectview",
+                        "margin":[0,0,0,5],
+                        "objectBinding": {
+                            "pullFormat":"${VFXBoxer.GlobalSettings}"
+                        },
+                        "properties": [
+                            {
+                                "name":"Window Size",
+                                "dataBinding":{
+                                    "pullFormat":"${VFXBoxer.GetWindowSize}",
+                                    "pullReplaceNull":"",
+                                    "pushFormat":["VFXBoxer:SetWindowSize[\"","\"]"]
+                                  },
+                                  "editTemplate":"propertyview.textbox"                                  
+                            },
+                            {
+                                "name":"Background Color",
+                                "dataBinding":{
+                                    "pullFormat":"${This.Object.Get[backgroundColor]}",
+                                    "pullReplaceNull":"",
+                                    "pushFormat":["This.Object:SetString[backgroundColor,\"","\"]"]
+                                  },
+                                  "editTemplate":"propertyview.textbox"                                  
+                            },
+                            {
+                                "name":"Next View Hotkey",
+                                "dataBinding":{
+                                  "pullFormat":"${This.Object.Get[nextViewHotkey]}",
+                                  "pullReplaceNull":"",
+                                  "pushFormat":["This.Object:SetString[nextViewHotkey,\"","\"]"]
+                                },
+                                "editTemplate":"propertyview.inputCombo",
+                                "controlData":{
+                                    "horizontalAlignment":"center"
+                                }                            
+                            },
+                            {
+                                "name":"Previous View Hotkey",
+                                "dataBinding":{
+                                  "pullFormat":"${This.Object.Get[previousViewHotkey]}",
+                                  "pullReplaceNull":"",
+                                  "pushFormat":["This.Object:SetString[previousViewHotkey,\"","\"]"]
+                                },
+                                "editTemplate":"propertyview.inputCombo",
+                                "controlData":{
+                                    "horizontalAlignment":"center"
+                                }                            
+                            },
+                            {
+                                "name":"Toggle Clone Hotkey",
+                                "dataBinding":{
+                                  "pullFormat":"${This.Object.Get[cloneHotkey]}",
+                                  "pullReplaceNull":"",
+                                  "pushFormat":["This.Object:SetString[cloneHotkey,\"","\"]"]
+                                },
+                                "editTemplate":"propertyview.inputCombo",
+                                "controlData":{
+                                    "horizontalAlignment":"center"
+                                }                            
+                            },
+                            {
+                                "name":"All Toggle Clone Hotkey",
+                                "dataBinding":{
+                                  "pullFormat":"${This.Object.Get[allCloneHotkey]}",
+                                  "pullReplaceNull":"",
+                                  "pushFormat":["This.Object:SetString[allCloneHotkey,\"","\"]"]
+                                },
+                                "editTemplate":"propertyview.inputCombo",
+                                "controlData":{
+                                    "horizontalAlignment":"center"
+                                }                            
+                            }
+                        ]
+                    },
+                    {
+                        "type":"button",
+                        "_dock":"top",
+                        "content":"Save Changes",
+                        "horizontalAlignment": "right",
+                        "margin":[0,0,0,15],
+                        "eventHandlers": {
+                            "onRelease":{
+                                "type":"method",
+                                "object":"VFXBoxer",
+                                "method":"StoreSettings"
+                            }
+                        }
+                    },
+                    {
+                        "type":"button",
+                        "_dock":"left",
+                        "content":"Launch Control Window",
+                        "eventHandlers": {
+                            "onRelease":{
+                                "type":"method",
+                                "object":"VFXBoxer",
+                                "method":"LaunchControlWindow"
+                            }
+                        }
+                    },
+                    {
+                        "type":"button",
+                        "_dock":"right",
+                        "horizontalAlignment": "right",
+                        "content":"Reload Agent",
+                        "eventHandlers": {
+                            "onRelease":{
+                                "type":"code",
+                                "code":"InnerSpace.Agent[VFXBoxer]:Stop:Reload:Start"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
